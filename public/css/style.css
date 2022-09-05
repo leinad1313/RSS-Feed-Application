@@ -1,0 +1,31 @@
+:root {
+    --brand-color: rgba(237, 127, 51, 0.90);
+    --brand-color-hover: rgba(70, 87, 117, 0.90);
+}
+
+.navbar {
+    background-color: var(--brand-color);
+}
+
+.btn-primary {
+    background-color: var(--brand-color);
+    border-color: var(--brand-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--brand-color-hover);
+    border-color: var(--brand-color-hover);
+}
+
+.btn-primary:focus {
+    background-color: var(--brand-color-hover);
+    border-color: var(--brand-color-hover);
+}
+
+.jumbotron {
+    background-color: rgba(207, 220, 230, 0.6);
+}
+
+.card-header {
+    background-color: rgba(207, 220, 230, 0.6);
+}

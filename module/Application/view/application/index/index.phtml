@@ -1,0 +1,162 @@
+<?php
+/**
+ * @var Laminas\View\Renderer\PhpRenderer $this
+ */
+
+use Feed\Model\Feed;
+
+$this->form->setAttribute('action', $this->url('home'));
+$this->form->prepare();
+?>
+<br>
+<br>
+<br>
+<div class="wrapper">
+    <div class="collapse show" id="collapseMenu">
+        <div class="jumbotron">
+            <h1 class="display-4">Welcome to the RSS Feed Application</h1>
+
+            <p>
+                Congratulations! You have successfully installed the RSS Feed Application.
+            </p>
+
+            <hr class="my-4">
+
+            <a class="btn btn-primary btn-lg" href="https://github.com/leinad1313" target="_blank">
+                Checkout the RSS Feed Application on GitHub <i class="bi bi-link"></i>
+            </a>
+        </div>
+
+
+        <div class="card mb-4">
+            <h2 class="card-header">Upcoming Updates</h2>
+            <div class="card-body">
+                <ul>
+                    <li>Remove additional GET variables</li>
+                    <li>Flash messages</li>
+                    <li>Custom error logging</li>
+                    <li>Styling, CSS rework</li>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="card-deck">
+            <div class="card">
+                <h2 class="card-header">RSS Feed</h2>
+                <div class="card-body">
+                    <p>
+                        Input an RSS Feed URL to load given entries. Only full URLs are supported!
+                    </p>
+                    <?= $this->form()->openTag($this->form) ?>
+                    <div class="d-inline-flex w-100">
+                        <?= $this->formText($this->form->get('feedUrl')) ?>
+                        <?= $this->formHidden($this->form->get('csrf')) ?>
+                        <span class="ml-2"><?= $this->formSubmit($this->form->get('loadFeed')) ?></span>
+                    </div>
+                    <?= $this->form()->closeTag($this->form) ?>
+                    <?php if ($this->errorMessage): ?>
+                        <div class="alert alert-warning mt-4" role="alert">
+                            <i class="bi bi-exclamation-square-fill mr-2"></i><?= $this->errorMessage ?>
+                        </div>
+                    <?php endif; ?>
+                    <?php if ($this->localFeeds): ?>
+                        <?php foreach($this->localFeeds as $url => $item): ?>
+                            <a href="<?= $this->url('home') ?>?feedUrl=<?= $url ?>" class="btn btn-outline-secondary mt-2"><img src="<?= $item->imageUrl ?>" class="mr-2" style="object-fit: contain; max-height: 25px; height: 25px;" alt=""><?= $item->title ?></a>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2 class="card-header">Help &amp; Support</h2>
+                <div class="card-body">
+                    <p>
+                        If you need any help or support while setting up your RSS Feed installation,
+                        you may reach me via <a href="https://github.com/leinad1313/">git</a>.
+                        I'd love to hear any questions or feedback you may have
+                        regarding any release.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr class="my-4">
+    <p class="text-center">
+    <?php if ($this->feed instanceof Feed && isset(get_object_vars($this->localFeeds)[(string) $this->feed->getURL()]) && get_object_vars($this->localFeeds)[(string) $this->feed->getURL()]->default === false): ?>
+        <a title="The favorite feed will be loaded as default" href="<?= $this->url('favorite') ?>?feedUrl=<?= $this->feed->getURL() ?>" class="btn btn-outline-warning"><i class="bi bi-star-fill mr-2"></i>Favor</a>
+    <?php endif; ?>
+    <?php if ($this->feed instanceof Feed && !isset(get_object_vars($this->localFeeds)[(string) $this->feed->getURL()])): ?>
+        <a href="<?= $this->url('save') ?>?feedUrl=<?= $this->feed->getURL() ?>&title=<?= $this->feed->getTitle() ?>&imageUrl=<?= $this->feed->getImage() ?>" class="btn btn-outline-success"><i class="bi bi-save-fill mr-2"></i>Save</a>
+    <?php endif; ?>
+    <?php if ($this->feed instanceof Feed && isset(get_object_vars($this->localFeeds)[(string) $this->feed->getURL()])): ?>
+        <script>
+            // Confirm dialog for feed deletion
+            function confirmDelete(url) {
+                if (confirm('Are you sure you want to delete this feed?')) {
+                    document.location = url;
+                }
+            }
+        </script>
+        <a href="javascript:confirmDelete('<?= $this->url('delete') ?>?feedUrl=<?= $this->feed->getURL() ?>')" class="btn btn-outline-danger"><i class="bi bi-trash2-fill mr-2"></i>Delete</a>
+    <?php endif; ?>
+    </p>
+    <p class="text-center">
+        <a class="btn btn-primary" data-toggle="collapse" href="#collapseMenu" role="button" aria-expanded="true" aria-controls="collapseMenu" title="Expand or collapse the info section">
+            <i class="bi bi-caret-up-fill"></i>
+            <i class="bi bi-caret-down-fill"></i>
+        </a>
+    </p>
+    <br>
+    <br>
+    <br>
+</div>
+
+<div class="container">
+    <?php if ($this->feed instanceof Feed): ?>
+        <div class="mt-4">
+            <div class="jumbotron">
+                <?php if ($this->feed->getLink()): ?>
+                    <div class="d-inline-flex justify-content-end w-100 mb-2"><a class="btn btn-primary" href="<?= $this->feed->getLink() ?>"><i class="bi bi-link"></i></a></div>
+                <?php endif; ?>
+                <div class="d-inline-flex">
+                    <div class="align-self-center"><img src="<?= $this->feed->getImage() ?>" class="mr-2" style="object-fit: contain; max-height: 25px;" alt=""></div>
+                    <h1 class="display-6 text-break"><?= $this->feed->getTitle() ?></h1>
+                </div>
+                <hr>
+                <p>
+                    <?= ucfirst($this->feed->getDescription()) ?>
+                </p>
+            </div>
+        </div>
+
+        <br>
+
+        <?php foreach($this->feed->getItems() as $key => $item): ?>
+            <div class="card mb-5">
+                <div class="card-header">
+                    <img src="<?= $item->getThumbnail() ?>" class="card-img-top mx-auto p-2" style="object-fit: contain; max-height: 400px;" alt="">
+                    <?php if ($item->getThumbnail()): ?>  <hr class=""> <?php endif; ?>
+                    <h2 class="<?php if ($item->getThumbnail()): ?> pt-4  <?php endif; ?>"><p class="text-center text-uppercase"><?= $item->getTitle() ?></p></h2>
+                    <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item m-auto">
+                            <span class="nav-link text-muted"><?= $item->getPubDate() ?></span>
+                        </li>
+                        <li class="nav-item m-auto">
+                            <span class="nav-link text-muted"><?= $item->getAuthor() ?: '---' ?></span>
+                        </li>
+                    </ul>
+                </div>
+
+
+                <div class="card-body">
+                    <p class="p-4">
+                        <?= $item->getDescription() ?>
+                    </p>
+
+                    <?php if ($item->getLink()): ?><a class="btn btn-primary" style="min-width: 100px" href="<?= $item->getLink() ?>"><i class="bi bi-book"></i></a> <?php endif; ?>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    <?php endif; ?>
+</div>
