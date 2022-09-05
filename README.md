@@ -8,6 +8,8 @@ default when opening the site.
 <br>
 When [api.rss2json.com](https://www.api.rss2json.com) becomes unavailable implement your own API. Parts and modules are easily replaced!
 
+Three feeds are installed by default but can be removed from the localFeed.config.json.
+
 ## Docker
 In order to use this project correctly you must install [Docker](https://www.docker.com).
 <br>
