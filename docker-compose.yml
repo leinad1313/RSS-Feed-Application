@@ -1,7 +1,6 @@
 services:
   rssfeed:
     image: thehideout/php-8.0.2-apache-composer-xdebug:latest
-    build: .
     ports:
      - "8080:80"
     volumes:

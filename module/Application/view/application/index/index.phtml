@@ -32,9 +32,15 @@ $this->form->prepare();
             <h2 class="card-header">Upcoming Updates</h2>
             <div class="card-body">
                 <ul>
+                    <li>Admin settings
+                        <ul>
+                            <li>Change style and icon of the application</li>
+                            <li>Remove or add basic welcome information</li>
+                            <li>Detailed error log reachable trough admin page</li>
+                        </ul>
+                    </li>
                     <li>Remove additional GET variables</li>
                     <li>Flash messages</li>
-                    <li>Custom error logging</li>
                     <li>Styling, CSS rework</li>
                 </ul>
             </div>
@@ -134,10 +140,12 @@ $this->form->prepare();
 
         <?php foreach($this->feed->getItems() as $key => $item): ?>
             <div class="card mb-5">
-                <div class="card-header">
+                <div class="card-header text-center text-uppercase">
                     <img src="<?= $item->getThumbnail() ?>" class="card-img-top mx-auto p-2" style="object-fit: contain; max-height: 400px;" alt="">
-                    <?php if ($item->getThumbnail()): ?>  <hr class=""> <?php endif; ?>
-                    <h2 class="<?php if ($item->getThumbnail()): ?> pt-4  <?php endif; ?>"><p class="text-center text-uppercase"><?= $item->getTitle() ?></p></h2>
+                    <?php if ($item->getThumbnail()): ?>
+                        <hr class="">
+                    <?php endif; ?>
+                    <h2 class="<?php if ($item->getThumbnail()): ?> py-2 <?php endif; ?>"><?= $item->getTitle() ?></h2>
                     <ul class="nav nav-tabs card-header-tabs">
                         <li class="nav-item m-auto">
                             <span class="nav-link text-muted"><?= $item->getPubDate() ?></span>

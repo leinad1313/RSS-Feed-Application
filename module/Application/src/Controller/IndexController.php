@@ -47,7 +47,7 @@ class IndexController extends AbstractActionController
 
         // Get saved feed URLs from localFeed.config.json
         $errorMessage = '';
-        if ($urlContent = file_get_contents(self::PATH_LOCAL_FEED_JSON)) {
+        if ($urlContent = @file_get_contents(self::PATH_LOCAL_FEED_JSON)) {
             // Check if JSON is successfully loaded as object
             if (($json = json_decode($urlContent)) && $json instanceof StdClass) {
                 $jsonArray = get_object_vars($json);
@@ -86,7 +86,7 @@ class IndexController extends AbstractActionController
 
         // Get saved feed URLs from localFeed.config.json
         $errorMessage = '';
-        if ($urlContent = file_get_contents(self::PATH_LOCAL_FEED_JSON)) {
+        if ($urlContent = @file_get_contents(self::PATH_LOCAL_FEED_JSON)) {
             // Check if JSON is successfully loaded as object
             if (($json = json_decode($urlContent)) && $json instanceof StdClass) {
                 $jsonArray = get_object_vars($json);
@@ -119,7 +119,7 @@ class IndexController extends AbstractActionController
 
         // Get saved feed URLs from localFeed.config.json
         $errorMessage = '';
-        if ($urlContent = file_get_contents(self::PATH_LOCAL_FEED_JSON)) {
+        if ($urlContent = @file_get_contents(self::PATH_LOCAL_FEED_JSON)) {
             // Check if JSON is successfully loaded as object
             if (($json = json_decode($urlContent)) && $json instanceof StdClass) {
                 $jsonArray = get_object_vars($json);
@@ -157,7 +157,7 @@ class IndexController extends AbstractActionController
 
 
         // Get saved feed URLs from localFeed.config.json
-        if ($urlContent = file_get_contents(self::PATH_LOCAL_FEED_JSON)) {
+        if ($urlContent = @file_get_contents(self::PATH_LOCAL_FEED_JSON)) {
             // Check if JSON is successfully loaded as object
             if (($json = json_decode($urlContent)) && $json instanceof StdClass) {
                 $localFeeds = $json;
